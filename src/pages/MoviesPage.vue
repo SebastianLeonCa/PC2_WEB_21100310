@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-pa-md">
     <div class="text-h5 text-center q-mb-md">Listado de Películas</div>
-
     <q-item class="q-gutter-sm">
       <q-item-section>
         <q-input
@@ -18,6 +17,32 @@
           label="Buscar"
           color="primary"
           @click="fetchMovies"
+          style="width: 100%"
+        />
+      </q-item-section>
+    </q-item>
+
+    <q-item class="q-gutter-sm">
+      <q-item-section>
+        <q-toggle
+          v-model="isPopular"
+          label="Ordenar por popularidad"
+          left-label="Fecha de lanzamiento"
+          right-label="Popularidad"
+          style="width: 100%"
+        />
+      </q-item-section>
+
+      <q-item-section>
+        <q-input
+          v-model="releaseDateFilter"
+          label="Año de lanzamiento"
+          type="number"
+          min="1900"
+          max="2024"
+          outlined
+          dense
+          debounce="300"
           style="width: 100%"
         />
       </q-item-section>
@@ -54,8 +79,10 @@ export default {
     return {
       movies: [],
       searchQuery: "",
+      isPopular: true,
+      releaseDateFilter: "",
       apiKey:
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NzY1ZDljOGVhZGU4NGExMGExZjM4OTgzMDA5Zjk1OSIsIm5iZiI6MTczMjE2ODY4Mi4zNTYyNzUsInN1YiI6IjY3M2ViZWQ1Y2U3MTg0MzRmMzhiZWI5MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.x70vNLu9M4yFu9uX-MwX_-Qn1SP33gdqqE7_bCQSgKw",
+        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODRmMmUwODYxM2JmN2FlYTM1OGI0OTgzNDNkMWUwNiIsInN1YiI6IjVmZTUxM2M3ZTE4Yjk3MDAzYzg5NzE3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.StJwmra-PsBwZTOXWg3Y06VEu8CGfAo8dXV7ZQ3RnIs", // Tu API key
     };
   },
   methods: {
@@ -63,6 +90,8 @@ export default {
       const url = this.searchQuery
         ? `https://api.themoviedb.org/3/search/movie`
         : `https://api.themoviedb.org/3/discover/movie`;
+
+      const sortBy = this.isPopular ? "popularity.desc" : "release_date.desc";
 
       try {
         const response = await axios.get(url, {
@@ -76,7 +105,8 @@ export default {
             include_video: false,
             language: "es-PE",
             page: 1,
-            sort_by: "popularity.desc",
+            sort_by: sortBy,
+            primary_release_year: this.releaseDateFilter || undefined,
           },
         });
         this.movies = response.data.results;
