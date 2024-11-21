@@ -2,19 +2,13 @@
   <q-page class="flex flex-center">
     <q-card class="q-pa-md" style="width: 400px">
       <q-card-section>
-        <div class="text-h6">Inicio de sesión</div>
+        <div class="text-h6">Iniciar Sesión</div>
       </q-card-section>
       <q-card-section>
-        <q-input
-          v-model="email"
-          label="Correo Electrónico"
-          type="email"
-          outlined
-          dense
-        />
+        <q-input v-model="email" label="Email" type="email" outlined dense />
         <q-input
           v-model="password"
-          label="Contraseña"
+          label="Password"
           type="password"
           outlined
           dense
@@ -23,7 +17,7 @@
       </q-card-section>
       <q-card-actions align="center">
         <q-btn
-          label="Iniciar sesión"
+          label="Log In"
           color="primary"
           @click="login"
           :loading="loading"
@@ -65,7 +59,7 @@ export default {
         }
       } catch (error) {
         this.errorMessage =
-          error.response?.data?.message || "Las credenciales incorrectas";
+          error.response?.data?.message || "Las credenciales son incorrectas";
       } finally {
         this.loading = false;
       }
