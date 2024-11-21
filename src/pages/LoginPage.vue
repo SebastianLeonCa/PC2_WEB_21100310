@@ -1,39 +1,35 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-card class="q-pa-md" style="width: 400px">
-      <q-card-section>
-        <div class="text-h6">Inicio de sesión</div>
-      </q-card-section>
-      <q-card-section>
-        <q-input
-          v-model="email"
-          label="Correo Electrónico"
-          type="email"
-          outlined
-          dense
-        />
-        <q-input
-          v-model="password"
-          label="Contraseña"
-          type="password"
-          outlined
-          dense
-          class="q-mt-sm"
-        />
-      </q-card-section>
-      <q-card-actions align="center">
-        <q-btn
-          label="Iniciar sesión"
-          color="primary"
-          @click="login"
-          :loading="loading"
-        />
-      </q-card-actions>
-      <q-card-section v-if="errorMessage" class="text-negative">
-        {{ errorMessage }}
-      </q-card-section>
+  <div class="full-screen-container flex flex-center">
+    <q-card>
+      <q-card class="q-pa-md" style="width: 400px">
+        <q-card-section>
+          <div class="text-h6">Iniciar Sesión</div>
+        </q-card-section>
+        <q-card-section>
+          <q-input v-model="email" label="Email" type="email" outlined dense />
+          <q-input
+            v-model="password"
+            label="Password"
+            type="password"
+            outlined
+            dense
+            class="q-mt-sm"
+          />
+        </q-card-section>
+        <q-card-actions align="center">
+          <q-btn
+            label="Log In"
+            color="primary"
+            @click="login"
+            :loading="loading"
+          />
+        </q-card-actions>
+        <q-card-section v-if="errorMessage" class="text-negative">
+          {{ errorMessage }}
+        </q-card-section>
+      </q-card>
     </q-card>
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -65,7 +61,7 @@ export default {
         }
       } catch (error) {
         this.errorMessage =
-          error.response?.data?.message || "Las credenciales incorrectas";
+          error.response?.data?.message || "Las credenciales son incorrectas";
       } finally {
         this.loading = false;
       }
@@ -75,10 +71,14 @@ export default {
 </script>
 
 <style scoped>
-.q-page {
+.full-screen-container {
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-image: url("../assets/fondoLogin.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>
